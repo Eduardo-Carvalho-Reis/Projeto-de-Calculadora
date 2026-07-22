@@ -2,8 +2,13 @@ import { app,BrowserWindow } from "electron";
 
 const criarJanela=()=>{
     const janela = new BrowserWindow({
-        width:800,
-        height: 600
+        
+        width: 380,
+        height: 600,
+        resizable: false,     // Impede redimensionamento
+        minimizable: true,
+        maximizable: false,   // Desabilita maximizar
+        autoHideMenuBar: true // Esconde a barra de menu
     })
 
     janela.loadFile('src/view/index.html')

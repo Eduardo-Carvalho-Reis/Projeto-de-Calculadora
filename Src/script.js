@@ -13,8 +13,11 @@ button.forEach((button) => {
         }
         else if (button.value === "=") {
             calcularResultadoFinal();
+        } else if (button.value === "C") {
+            limpar();
         }
         else {
+            button.addEventListener
             adicionar(button.value);
 
         }
@@ -25,6 +28,12 @@ button.forEach((button) => {
 
 
 
+const limpar = () => {
+    valoresArmazenados = []
+    valoresArmazenadosAux = [];
+    document.getElementById('visor').innerText = '';
+
+}
 
 const adicionar = (valor) => {
     valoresArmazenados.push(valor);
@@ -40,8 +49,8 @@ const remover = () => {
 
 }
 
-const multiplicar = (a,b)=>{
-    return a*b;
+const multiplicar = (a, b) => {
+    return a * b;
 }
 
 const somar = (a, b) => {
@@ -71,42 +80,46 @@ const calcularResultadoFinal = () => {
         valorAnterior = expressao[i - 1];
         valorAtual = expressao[i];
         proximoValor = expressao[i + 1];
-        if (valorAtual==='x'){
-             expressao.splice(i-1,3,multiplicar(Number(valorAnterior),Number(proximoValor)));
-             
-             i--;
-            
+        if (valorAtual === 'x') {
+            expressao.splice(i - 1, 3, multiplicar(Number(valorAnterior), Number(proximoValor)));
 
-
-        }else if (valorAtual==='/'){
-            expressao.splice(i-1,3,dividir(Number(valorAnterior),Number(proximoValor)));
-            
             i--;
-            
-        }
-        
 
-        
-        
+
+
+        } else if (valorAtual === '/') {
+            expressao.splice(i - 1, 3, dividir(Number(valorAnterior), Number(proximoValor)));
+
+            i--;
+
+        }
+
+
+
+
     }
-    for(let j=0;j<expressao.length;j++){
-        valorAnterior = expressao[j- 1];
+    for (let j = 0; j < expressao.length; j++) {
+        valorAnterior = expressao[j - 1];
         valorAtual = expressao[j];
         proximoValor = expressao[j + 1];
-        if(valorAtual==='+'){ 
-          expressao.splice(j-1,3,somar(Number(valorAnterior),Number(proximoValor)));
-         j--;
+        if (valorAtual === '+') {
+            expressao.splice(j - 1, 3, somar(Number(valorAnterior), Number(proximoValor)));
+            j--;
 
-        }else if(valorAtual==='-'){
-        expressao.splice(j-1,3,subtrair(Number(valorAnterior),Number(proximoValor)));
-        j--;
-        
-        }
-
+        } else if (valorAtual === '-') {
+            expressao.splice(j - 1, 3, subtrair(Number(valorAnterior), Number(proximoValor)));
+            j--;
 
         }
-    resultao=expressao;
-    document.getElementById('t').innerText=resultao;
+
+
+    }
+    resultao = expressao;
+    document.getElementById('visor').innerText = resultao;
+    valoresArmazenados = [String(resultao)];
+    valoresArmazenadosAux = [];
+
+
 
 }
 //função Responsavel por definir como a expressão vai se comportar
@@ -115,25 +128,37 @@ const definirExpressao = () => {
 
     for (let i = 0; i < valoresArmazenados.length; i++) {
 
-        if (!isNaN(valoresArmazenados[i])) {
+        const atual = valoresArmazenados[i];
+
+        if (atual === "-" && (i === 0 || isNaN(valoresArmazenados[i - 1]))) {
+
+            valoresArmazenadosAux.push("-" + valoresArmazenados[i + 1]);
+            i++;
+            continue;
+
+        }
+
+
+
+        if (!isNaN(atual)) {
 
             if (
                 valoresArmazenadosAux.length === 0 ||
                 isNaN(valoresArmazenadosAux[valoresArmazenadosAux.length - 1])
             ) {
 
-                valoresArmazenadosAux.push(valoresArmazenados[i]);
+                valoresArmazenadosAux.push(atual);
 
             } else {
 
                 valoresArmazenadosAux[valoresArmazenadosAux.length - 1] +=
-                    valoresArmazenados[i];
+                    atual;
 
             }
 
         } else {
 
-            valoresArmazenadosAux.push(valoresArmazenados[i]);
+            valoresArmazenadosAux.push(atual);
 
         }
     }
